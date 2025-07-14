@@ -1,0 +1,15 @@
+
+/*Root*/
+
+
+/*Body*/
+body{
+    margin: 0; padding: 0;
+    background-color: whitesmoke;
+}
+
+.header{
+    background: #000;
+    color: antiquewhite;
+    padding: 10px;
+}
