@@ -198,7 +198,21 @@ const elements = [
     alkaliMetals, alkalineEarthMetals, group13, group14, group15, group16, halogens, nobleGases, group3, group4, lanthanides, actinides
 ];
 
+// A card found in the periodic table
+// Bg is th color of the element
+// Name is the name of the element
+// Symbol is the symbol of the element
 
+function periodictableelementcard(element){
+    return Component('div',
+        {
+            className: 'periodic-table-element-card',
+            style: { 
+                backgroundColor: element.color,
+            },
+        }
+    )
+}
 
 // Adding elements to the DOM
 document.addEventListener("DOMContentLoaded", () => {});
