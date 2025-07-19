@@ -13,3 +13,87 @@ body{
     color: antiquewhite;
     padding: 10px;
 }
+
+/*main*/
+main{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+/*Periodic Table*/
+.periodic-table-section{
+    width: 30%;
+    height: 100%;
+    background-color: antiquewhite;
+    padding: 10px;
+}
+
+.periodic-table{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.periodictablecard{
+    width: max-width;
+    height: max-height;
+    background-color: antiquewhite;
+    border-radius: 30%;
+    padding: 10px;
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr ;
+}
+
+.periodictablecard .symbol{
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 4;
+    text-align: center;
+    font-size: 80px;
+    font-weight: bold;
+}
+
+.periodictablecard .name{
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 4; 
+    grid-row-end: 5;   
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.periodictablecard .electrons{
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 1; 
+    grid-row-end: 2;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: right;
+}
+.periodictablecard .protons{
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 2; 
+    grid-row-end: 3;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: right;
+}
+.periodictablecard .neutrons{
+    grid-column-start: 3;
+    grid-column-end: 5;
+    grid-row-start: 3; 
+    grid-row-end: 4;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: right;
+}
