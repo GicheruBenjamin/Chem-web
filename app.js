@@ -194,5 +194,11 @@ const group15 = [
   ];
   
 
+const elements = [
+    alkaliMetals, alkalineEarthMetals, group13, group14, group15, group16, halogens, nobleGases, group3, group4, lanthanides, actinides
+];
+
+
+
 // Adding elements to the DOM
 document.addEventListener("DOMContentLoaded", () => {});
