@@ -194,25 +194,125 @@ const group15 = [
   ];
   
 
-const elements = [
-    alkaliMetals, alkalineEarthMetals, group13, group14, group15, group16, halogens, nobleGases, group3, group4, lanthanides, actinides
-];
-
-// A card found in the periodic table
-// Bg is th color of the element
-// Name is the name of the element
-// Symbol is the symbol of the element
-
-function periodictableelementcard(element){
-    return Component('div',
-        {
-            className: 'periodic-table-element-card',
-            style: { 
-                backgroundColor: element.color,
-            },
+  const elements = [
+    alkaliMetals,
+    alkalineEarthMetals,
+    group13,
+    group14,
+    group15,
+    group16,
+    halogens,
+    nobleGases,
+    group3,
+    group4,
+    lanthanides,
+    actinides
+  ];
+  
+  // Flatten all grouped arrays into one array
+  const allElements = elements.flat();
+  
+  // Your reusable Component function (make sure it's defined)
+  function Component(el, props = {}) {
+    if (typeof el !== "string") throw new Error("Component: 'el' must be a string");
+  
+    const element = document.createElement(el);
+  
+    if (props.className) element.className = props.className;
+    if (props.id) element.id = props.id;
+    if (props.title) element.title = props.title;
+  
+    if (props.style && typeof props.style === "object") {
+      Object.assign(element.style, props.style);
+    }
+  
+    if (props.dataset && typeof props.dataset === "object") {
+      for (const [key, value] of Object.entries(props.dataset)) {
+        element.dataset[key] = value;
+      }
+    }
+  
+    if (props.attributes && typeof props.attributes === "object") {
+      for (const [key, value] of Object.entries(props.attributes)) {
+        element.setAttribute(key, value);
+      }
+    }
+  
+    if (props.events && typeof props.events === "object") {
+      for (const [event, handler] of Object.entries(props.events)) {
+        if (typeof handler === "function") {
+          element.addEventListener(event, handler);
         }
-    )
-}
-
-// Adding elements to the DOM
-document.addEventListener("DOMContentLoaded", () => {});
+      }
+    }
+  
+    if (props.textContent !== undefined) {
+      element.textContent = props.textContent;
+    }
+  
+    if (props.children !== undefined) {
+      const appendChild = (child) => {
+        if (typeof child === "string" || typeof child === "number") {
+          element.appendChild(document.createTextNode(child));
+        } else if (child instanceof HTMLElement) {
+          element.appendChild(child);
+        }
+      };
+  
+      if (Array.isArray(props.children)) {
+        props.children.flat(Infinity).forEach(appendChild);
+      } else {
+        appendChild(props.children);
+      }
+    }
+  
+    return element;
+  }
+  
+  // Create one periodic table card
+  function createCard(element) {
+    return Component("div", {
+      className: "periodictablecard",
+      style: {
+        backgroundColor: element.color
+      },
+      children: [
+        Component("span", {
+          className: "symbol",
+          textContent: element.symbol
+        }),
+        Component("span", {
+          className: "name",
+          textContent: element.name
+        }),
+        Component("span", {
+          className: "electrons",
+          textContent: `e⁻: ${element.electrons}`
+        }),
+        Component("span", {
+          className: "protons",
+          textContent: `p⁺: ${element.protons}`
+        }),
+        Component("span", {
+          className: "neutrons",
+          textContent: `n⁰: ${element.neutrons}`
+        })
+      ]
+    });
+  }
+  
+  // Render all cards into the periodic table container
+  document.addEventListener("DOMContentLoaded", () => {
+    const container = document.querySelector(".periodic-table-section");
+  
+    if (!container) {
+      console.error("No container found with .periodic-table-section");
+      return;
+    }
+  
+    allElements.forEach(element => {
+      const card = createCard(element);
+      container.appendChild(card);
+    });
+  });
+  
