@@ -44,22 +44,22 @@ main{
 
 .periodic-table{
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     height: 100%;
 }
 
 .periodictablecard{
-    width: max-content;
-    height: max-content;
+    width: 140px;
+    height: 150px;
     border-radius: 10%;
     padding: 10px;
     background-color: antiquewhite;
     display:grid;
     grid-template-columns: 70% 1fr;
     grid-template-rows: 1fr 1fr 1fr ;
-    row-gap: .6rem;
+    row-gap: .3rem;
     column-gap: .9rem;
     justify-items: center;
     align-items: stretch;
