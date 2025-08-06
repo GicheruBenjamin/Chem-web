@@ -142,6 +142,21 @@ const group15 = [
     lanthanides,
     actinides
   ];
+
+  const elementsgroups = [
+    { groupname: "Alkali Metals", elements: alkaliMetals, icon: '🧪' , className: 'alkali-metals-container' },
+    { groupname: "Alkaline Earth Metals", elements: alkalineEarthMetals , icon: '🌏' , className: 'alkaline-earth-metals-container' },
+    { groupname: "Group 13 Elements", elements: group13 , icon: '🌕' , className: 'group13-container' },
+    { groupname: "Group 14 Elements", elements: group14, icon: '🌑' , className: 'group14-container' },
+    { groupname: "Group 15 Elements", elements: group15 , icon: '🌓' , className: 'group15-container' },
+    { groupname: "Group 16 Elements", elements: group16 , icon: '🌔' , className: 'group16-container' },
+    { groupname: "Halogens", elements: halogens , icon: '☢️' , className: 'halogens-container' },
+    { groupname: "Noble Gases", elements: nobleGases , icon: '🔥' , className: 'noble-gases-container' },
+    { groupname: "Group 3 Elements", elements: group3 , icon: '🌗' , className: 'group3-container' },
+    { groupname: "Group 4 Elements", elements: group4 , icon: '🌘' , className: 'group4-container' },
+    { groupname: "Lanthanides", elements: lanthanides , icon: '🌜' , className: 'lanthanides-container' },
+    { groupname: "Actinides", elements: actinides , icon: '🌝' , className: 'actinides-container' }
+  ]
   
   // Flatten all grouped arrays into one array
   const allElements = elements.flat();
@@ -232,179 +247,20 @@ const group15 = [
     });
   }
   
-const alkaliMetalscontainer = Components("div", {
-  className: "alkali-metals-container",
-  children: [
-    Component("h2", {
-      textContent: "Alkali Metals"
-    }),
-    Component("div", {
-      className: "alkali-metals",
-      children: alkaliMetals.map(createCard)
-    })
-  ]
-});
-
-const alkalineEarthMetalscontainer = Components("div", {
-  className: "alkaline-earth-metals-container",
-  children: [
-    Component("h2", {
-      textContent: "Alkaline Earth Metals"
-    }),
-    Component("div", {
-      className: "alkaline-earth-metals",
-      children: alkalineEarthMetals.map(createCard)
-    })
-  ]
-});
-  
-const group13container = Components("div", {
-  className: "group13-container",
-  children: [
-    Component("h2", {
-      textContent: "Group 13 Elements"
-    }),
-    Component("div", {
-      className: "group13",
-      children: group13.map(createCard)
-    })
-  ]
-  });
-
-  const group14container = Components("div", {
-    className: "group14-container",
-    children: [
-      Component("h2", {
-        textContent: "Group 14 Elements"
-      }),
-      Component("div", {
-        className: "group14",
-        children: group14.map(createCard)
-      })
-    ]
-  });
-
-  const group15container = Components("div", {
-    className: "group15-container",
-    children: [
-      Component("h2", {
-        textContent: "Group 15 Elements"
-      }),
-      Component("div", {
-        className: "group15",
-        children: group15.map(createCard)
-      })
-    ]
-  });
-
-  const group16container = Components("div", {
-    className: "group16-container",
-    children: [
-      Component("h2", {
-        textContent: "Group 16 Elements"
-      }),
-      Component("div", {
-        className: "group16",
-        children: group16.map(createCard)
-      })
-    ]
-  });
-
-  const halogenscontainer = Components("div", {
-    className: "halogens-container",
-    children: [
-      Component("h2", {
-        textContent: "Halogens"
-      }),
-      Component("div", {
-        className: "halogens",
-        children: halogens.map(createCard)
-      })
-    ]
-  });
-
-  const nobleGasescontainer = Components("div", {
-    className: "noble-gases-container",
-    children: [
-      Component("h2", {
-        textContent: "Noble Gases"
-      }),
-      Component("div", {
-        className: "noble-gases",
-        children: nobleGases.map(createCard)
-      })
-    ]
-  });
-
-  const group3container = Components("div", {
-    className: "group3-container",
-    children: [
-      Component("h2", {
-        textContent: "Group 3 Elements"
-      }),
-      Component("div", {
-        className: "group3",
-        children: group3.map(createCard)
-      })
-    ]
-  });
-
-  const group4container = Components("div", {
-    className: "group4-container",
-    children: [
-      Component("h2", {
-        textContent: "Group 4 Elements"
-      }),
-      Component("div", {
-        className: "group4",
-        children: group4.map(createCard)
-      })
-    ]
-  });
-
-  const lanthanidescontainer = Components("div", {
-    className: "lanthanides-container",
-    children: [
-      Component("h2", {
-        textContent: "Lanthanides"
-      }),
-      Component("div", {
-        className: "lanthanides",
-        children: lanthanides.map(createCard)
-      })
-    ]
-  });
-
-  const actinidescontainer = Components("div", {
-    className: "actinides-container",
-    children: [
-      Component("h2", {
-        textContent: "Actinides"
-      }),
-      Component("div", {
-        className: "actinides",
-        children: actinides.map(createCard)
-      })
-    ]
-  });
-
-  const periodicTable = Components("div", {
-    className: "periodic-table",
-    children: [
-      alkaliMetalscontainer,
-      alkalineEarthMetalscontainer,
-      group13container,
-      group14container,
-      group15container,
-      group16container,
-      halogenscontainer,
-      nobleGasescontainer,
-      group3container,
-      group4container,
-      lanthanidescontainer,
-      actinidescontainer
-    ]
-  });
+  function createGroup(group) {
+    return Component("div", {
+      className: group.className,
+      children: [
+        Component("h2", {
+          textContent: group.groupname
+        }),
+        Component("div", {
+          className: group.className,
+          children: group.elements.map(createCard)
+        })
+      ]
+    });
+  }
 
 
   // Render all cards into the periodic table container
