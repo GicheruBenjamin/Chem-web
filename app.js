@@ -127,22 +127,6 @@ const group15 = [
     { name: 'Lawrencium', symbol: 'Lr', electrons: 103, protons: 103, neutrons: 159, color: '#DA70D6' }
   ];
   
-
-  const elements = [
-    alkaliMetals,
-    alkalineEarthMetals,
-    group13,
-    group14,
-    group15,
-    group16,
-    halogens,
-    nobleGases,
-    group3,
-    group4,
-    lanthanides,
-    actinides
-  ];
-
   const elementsgroups = [
     { groupname: "Alkali Metals", elements: alkaliMetals, icon: '🧪' , className: 'alkali-metals-container' },
     { groupname: "Alkaline Earth Metals", elements: alkalineEarthMetals , icon: '🌏' , className: 'alkaline-earth-metals-container' },
@@ -157,21 +141,19 @@ const group15 = [
     { groupname: "Lanthanides", elements: lanthanides , icon: '🌜' , className: 'lanthanides-container' },
     { groupname: "Actinides", elements: actinides , icon: '🌝' , className: 'actinides-container' }
   ]
-  
-  // Flatten all grouped arrays into one array
-  const allElements = elements.flat();
 
   
   // Your reusable Component function (make sure it's defined)
   function Component(el, props = {}) {
     if (typeof el !== "string") throw new Error("Component: 'el' must be a string");
   
-    const element = document.createElement(el);
+    const element = document.createElement(el);// Create the element
   
-    if (props.className) element.className = props.className;
-    if (props.id) element.id = props.id;
+    if (props.className) element.className = props.className;// Add className if provided
+    if (props.id) element.id = props.id; // Add id if provided
     if (props.title) element.title = props.title;
-  
+    
+    // Add style if provided
     if (props.style && typeof props.style === "object") {
       Object.assign(element.style, props.style);
     }
@@ -181,13 +163,14 @@ const group15 = [
         element.dataset[key] = value;
       }
     }
-  
+    
+    // Add attributes if provided
     if (props.attributes && typeof props.attributes === "object") {
       for (const [key, value] of Object.entries(props.attributes)) {
         element.setAttribute(key, value);
       }
     }
-  
+    // Add events if provided
     if (props.events && typeof props.events === "object") {
       for (const [event, handler] of Object.entries(props.events)) {
         if (typeof handler === "function") {
@@ -218,54 +201,111 @@ const group15 = [
   
     return element;
   }
-  
-  // Create one periodic table card
-  function createCard(element) {
-    return Component("div", {
-      className: "periodictablecard",
-      style: {
-        backgroundColor: element.color
-      },
-      children: [
-        Component("span", {
-          className: "symbol",
-          textContent: element.symbol
-        }),
-        Component("span", {
-          className: "electrons",
-          textContent: `e⁻: ${element.electrons}`
-        }),
-        Component("span", {
-          className: "protons",
-          textContent: `p⁺: ${element.protons}`
-        }),
-        Component("span", {
-          className: "neutrons",
-          textContent: `n⁰: ${element.neutrons}`
-        })
-      ]
-    });
-  }
-  
-  function createGroup(group) {
-    return Component("div", {
-      className: group.className,
-      children: [
-        Component("h2", {
-          textContent: group.groupname
-        }),
-        Component("div", {
-          className: group.className,
-          children: group.elements.map(createCard)
-        })
-      ]
-    });
-  }
-
-
-  // Render all cards into the periodic table container
-  document.addEventListener("DOMContentLoaded", () => {
-    const container = document.querySelector(".periodic-table-section");
-    container.appendChild(periodicTable);
+  // Header Component
+function HeaderComponent() {
+  return Component("header", {
+    className: "header",
+    children: Component("h1", {
+      textContent: "Periodic Table"
+    })
   });
-  
+}
+
+//Element : name , symbol , electrons , protons , neutrons , color
+//Element card
+// ✅ Element symbol component (inside the element card)
+function elementsymbol(element) {
+  return Component("div", {
+    className: "element-symbol",
+    style: {
+      backgroundColor: element.color
+    },
+    textContent: element.symbol
+  });
+}
+
+// ✅ Element info section (inside the element card)
+function elementcardinfo(element) {
+  return Component("div", {
+    className: "element-card-info",
+    children: [
+      Component("div", {
+        className: "element-name",
+        textContent: element.name
+      }),
+      Component("span", {
+        className: "element-electrons",
+        textContent: `e=${element.electrons}`
+      }),
+      Component("span", {
+        className: "element-protons",
+        textContent: `p=${element.protons}`
+      }),
+      Component("span", {
+        className: "element-neutrons",
+        textContent: `n=${element.neutrons}`
+      })
+    ]
+  });
+}
+
+// ✅ Full element card
+function elementcard(element) {
+  return Component("div", {
+    className: "element-card",
+    children: [
+      elementsymbol(element),
+      elementcardinfo(element)
+    ]
+  });
+}
+
+// Groups: groupname , elements , icon , className
+function groupiconcard(group) {
+  return Component("div", {
+    className: "group-icon-card",
+    children: [
+      Component("span",{
+        className: "group-icon",
+        textContent: group.icon
+      }),
+      Component("span",{
+        className: "group-name",
+        textContent: group.groupname
+      }),
+    ]
+  });
+}
+
+function groupcontainer(group) {
+  return Component("div", {
+    className: group.className,
+    children: [
+      groupiconcard(group),
+      Component("div", {
+        className: "group-elements-container",
+        children: group.elements.map(elementcard)
+      })
+    ]
+  });
+}
+
+function MainLayout() {
+  //main layout
+  return Component("main", {
+    className: "main-layout",
+    children: [
+      elementsgroups.map(groupcontainer)
+    ]
+  })
+}
+
+function Init() {
+  document.body.prepend(HeaderComponent());
+  document.body.appendChild(MainLayout());
+}
+
+// Render to DOM on page load
+document.addEventListener("DOMContentLoaded", () => {
+  Init();
+})
