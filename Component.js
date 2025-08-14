@@ -1,28 +1,44 @@
 // Component.js
 
-//docs in Component.md
-
 export default class Component {
     static context = {};
     static routes = {};
+    static currentComponent = null; // track mounted component for cleanup
 
     constructor(el, props = {}) {
-        if (typeof el !== "string") alert("The 'el' parameter must be a string.");
+        // Element handling
+        if (typeof el === "string") {
+            if (el.startsWith("#") || el.startsWith(".")) {
+                const found = document.querySelector(el);
+                if (!found) throw new Error(`No element found for selector: ${el}`);
+                this.element = found;
+            } else {
+                this.element = document.createElement(el);
+            }
+        } else if (el instanceof HTMLElement) {
+            this.element = el;
+        } else {
+            throw new Error("The 'el' parameter must be a tag name, selector, or HTMLElement.");
+        }
 
-        this.el = el;
         this.props = props;
-        this.state = new Proxy(props.initialState || {}, {
+        this.childrenComponents = [];
+        this.boundElements = {};
+        this.eventListeners = [];
+
+        // State with reactivity
+        const initialState = props.initialState || {};
+        this.state = new Proxy(initialState, {
             set: (target, key, value) => {
+                if (target[key] === value) return true; // no change
                 target[key] = value;
                 this.updateBoundElements(key, value);
                 this.onUpdate();
                 return true;
             }
         });
-        this.element = document.createElement(el);
-        this.boundElements = {};
-        this.eventListeners = [];
 
+        // Apply setup methods
         this.#applyMeta();
         this.#applyAccessibility();
         this.#applyClassName();
@@ -31,8 +47,6 @@ export default class Component {
         this.#applyChildren();
         this.#applyAttributes();
         this.#applyEvents();
-
-        this.onMount();
     }
 
     // ---------------- Lifecycle ----------------
@@ -46,15 +60,38 @@ export default class Component {
         if (typeof this.props.onUnmount === "function") this.props.onUnmount(this);
     }
 
-    // ---------------- State Binding ----------------
+    mount(target) {
+        if (typeof target === "string") {
+            target = document.querySelector(target);
+            if (!target) throw new Error(`No mount target found for selector: ${target}`);
+        }
+        if (!(target instanceof HTMLElement)) {
+            throw new Error("Mount target must be an HTMLElement or a valid selector.");
+        }
+        target.appendChild(this.element);
+        this.onMount();
+    }
+
+    unmount() {
+        this.remove();
+    }
+
+    // ---------------- State ----------------
+    setState(partial) {
+        if (typeof partial !== "object") throw new Error("setState() expects an object.");
+        for (const [key, value] of Object.entries(partial)) {
+            this.state[key] = value;
+        }
+    }
+
     bindText(key, node) {
         if (!this.boundElements[key]) this.boundElements[key] = [];
         this.boundElements[key].push(node);
-        node.textContent = this.state[key];
+        node.textContent = this.state[key] ?? ""; // avoid "undefined"
     }
     updateBoundElements(key, value) {
         if (this.boundElements[key]) {
-            this.boundElements[key].forEach(node => node.textContent = value);
+            this.boundElements[key].forEach(node => node.textContent = value ?? "");
         }
     }
 
@@ -103,9 +140,11 @@ export default class Component {
     }
     #applyChildren() {
         if (!this.props.children) return;
+
         const appendChild = (child) => {
             if (child instanceof Component) {
                 this.element.appendChild(child.render());
+                this.childrenComponents.push(child);
             } else if (child instanceof HTMLElement) {
                 this.element.appendChild(child);
             } else if (typeof child === "string") {
@@ -146,10 +185,22 @@ export default class Component {
     }
     remove() {
         this.onUnmount();
+
+        // Remove child components
+        this.childrenComponents.forEach(child => {
+            if (child instanceof Component) {
+                child.remove();
+            }
+        });
+
+        // Remove event listeners
         this.eventListeners.forEach(({ event, handler }) => {
             this.element.removeEventListener(event, handler);
         });
-        this.element.remove();
+
+        if (this.element.parentNode) {
+            this.element.parentNode.removeChild(this.element);
+        }
     }
 
     // ---------------- Routing ----------------
@@ -158,9 +209,13 @@ export default class Component {
     }
     static navigate(path) {
         if (Component.routes[path]) {
-            document.body.innerHTML = "";
+            if (Component.currentComponent) {
+                Component.currentComponent.remove();
+            }
             const comp = Component.routes[path]();
-            document.body.appendChild(comp.render());
+            comp.mount(document.body);
+            Component.currentComponent = comp;
+            history.pushState({}, "", path);
         }
     }
 }
