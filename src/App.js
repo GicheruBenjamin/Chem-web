@@ -1,5 +1,6 @@
-// src/App.js
 
-function App(mountPoint, children) {
-    mountPoint.addChild(children);
+
+function App(mount, router) {
+    const app = document.querySelector("#app");
+    mount = mount || app;
 }
