@@ -1,118 +1,105 @@
 // src/helpers.js
+import { setState, getState } from "./Component.js";
 
-
-function updateComponenttextContent(component, textContent){
-    component.props.textContent = textContent
-    renderComponent(component)
+// ---- Text & Class Helpers ----
+export function updateComponentText(component, textContent) {
+    setState(component, { props: { ...component.props, textContent } });
 }
 
-function updateComponentClassName(component, className = ""){
-    component.props.className = className
-    renderComponent(component)
+export function updateComponentClass(component, className = "") {
+    setState(component, { props: { ...component.props, className: className.trim() } });
 }
 
-function addComponentClasslist(component, className = ""){
-    if (component.props.className){
-        component.props.className = component.props.className + " " + className
+export function addComponentClass(component, className = "") {
+    const current = (component.props.className || "").split(" ").filter(Boolean);
+    if (!current.includes(className)) current.push(className);
+    setState(component, { props: { ...component.props, className: current.join(" ") } });
+}
+
+export function toggleComponentClass(component, className = "") {
+    const current = (component.props.className || "").split(" ").filter(Boolean);
+    const index = current.indexOf(className);
+    if (index > -1) {
+        current.splice(index, 1);
     } else {
-        component.props.className = className
+        current.push(className);
     }
-    renderComponent(component)
+    setState(component, { props: { ...component.props, className: current.join(" ") } });
 }
 
-function toggleComponentClasslist(component, className = ""){
-    if (component.props.className.includes(className)){
-        component.props.className = component.props.className.replace(className, "")
-    } else {
-        component.props.className = component.props.className + " " + className
+export function removeComponentClass(component, className = "") {
+    const current = (component.props.className || "").split(" ").filter(Boolean);
+    setState(component, { props: { ...component.props, className: current.filter(c => c !== className).join(" ") } });
+}
+
+// ---- Style Helpers ----
+export function updateComponentStyle(component, style = {}) {
+    setState(component, { props: { ...component.props, style } });
+}
+
+export function addComponentStyle(component, style = {}) {
+    const merged = { ...(component.props.style || {}), ...style };
+    setState(component, { props: { ...component.props, style: merged } });
+}
+
+export function removeComponentStyle(component, keys = []) {
+    const newStyle = { ...(component.props.style || {}) };
+    for (const key of keys) {
+        delete newStyle[key];
     }
-    renderComponent(component)
+    setState(component, { props: { ...component.props, style: newStyle } });
 }
 
-function removeComponentClasslist(component, className = ""){
-    component.props.className = component.props.className.replace(className, "")
-    renderComponent(component)
+// ---- Attribute Helpers ----
+export function updateComponentAttributes(component, attributes = {}) {
+    setState(component, { props: { ...component.props, attributes } });
 }
 
-function updateComponentStyle(component, style = {}){
-    component.props.style = style
-    renderComponent(component)
+export function addComponentAttribute(component, attributes = {}) {
+    const merged = { ...(component.props.attributes || {}), ...attributes };
+    setState(component, { props: { ...component.props, attributes: merged } });
 }
 
-function addComponentStyle(component, style = {}){
-    for (const key in style){
-        component.props.style[key] = style[key]
+export function removeComponentAttribute(component, keys = []) {
+    const newAttrs = { ...(component.props.attributes || {}) };
+    for (const key of keys) {
+        delete newAttrs[key];
     }
-    renderComponent(component)
+    setState(component, { props: { ...component.props, attributes: newAttrs } });
 }
 
-function removeComponentStyle(component, style = {}){
-    for (const key in style){
-        component.props.style[key] = ""
-    }
-    renderComponent(component)
+// ---- Event Helpers ----
+export function addComponentEvent(component, event, callback) {
+    const merged = { ...(component.props.events || {}), [event]: callback };
+    setState(component, { props: { ...component.props, events: merged } });
 }
 
-
-function updateComponentAttributes(component, attributes = {}){
-    component.props.attributes = attributes
-    renderComponent(component)
+export function removeComponentEvent(component, event) {
+    const newEvents = { ...(component.props.events || {}) };
+    delete newEvents[event];
+    setState(component, { props: { ...component.props, events: newEvents } });
 }
 
-function addComponentAttribute(component, attribute = {}){
-    for (const key in attribute){
-        component.props.attributes[key] = attribute[key]
-    }
-    renderComponent(component)
+// ---- Children Helpers ----
+export function updateComponentChildren(component, children = []) {
+    setState(component, { children });
 }
 
-function removeComponentAttribute(component, attribute = {}){
-    for (const key in attribute){
-        component.props.attributes[key] = ""
-    }
-    renderComponent(component)
+export function addComponentChildren(component, children = []) {
+    setState(component, { children: [...(component.children || []), ...children] });
 }
 
-// addComponentEvent(component, event, callback)
-function addComponentEvent(component, event, callback){
-    component.props.events[event] = callback
-    renderComponent(component)
+export function removeComponentChildren(component, children = []) {
+    const current = [...(component.children || [])];
+    const filtered = current.filter(child => !children.includes(child));
+    setState(component, { children: filtered });
 }
 
-// removeComponentEvent(component, event)
-function removeComponentEvent(component, event){
-    delete component.props.events[event]
-    renderComponent(component)
+// ---- Selection Helpers ----
+export function selectComponent(component) {
+    addComponentClass(component, "selected");
 }
 
-function updateComponentChildren(component, children = []){
-    component.children = children
-    renderComponent(component)
-}
-
-function addComponentChildren(component, children = []){
-    component.children.push(...children)
-    renderComponent(component)
-}
-
-function removeComponentChildren(component, children = []){
-    for (const child of children){
-        const index = component.children.indexOf(child)
-        if (index > -1){
-            component.children.splice(index, 1)
-        }
-    }
-    renderComponent(component)
-}
-
-//selectComponent(component)
-function selectComponent(component){
-    component.props.className = component.props.className + " selected"
-    renderComponent(component)
-}
-
-//deselectComponent(component)
-function deselectComponent(component){
-    component.props.className = component.props.className.replace("selected", "")
-    renderComponent(component)
+export function deselectComponent(component) {
+    removeComponentClass(component, "selected");
 }
