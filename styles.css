@@ -54,12 +54,7 @@ body {
     padding: 1rem;
     background: #222;
     color: white;
-<<<<<<< HEAD
-    font-size: clamp(2.5rem, 5vw, 3rem);
-    font-family: var(--font-helvetica);
-    text-align: center; margin: 0; padding: 0;
 }
-
 #paragraph{
     color: white;
     font-size: clamp(1.5rem, 5vw, 2rem);
