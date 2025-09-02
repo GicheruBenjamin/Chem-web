@@ -1,35 +1,60 @@
-
-/*Root*/
-:root{
-    /*Typography*/
-    --font-lucida: Lucida Sans, Lucida Sans Regular, Lucida Grande, Lucida Sans Unicode, Geneva, Verdana, sans-serif;
-    --font-helvetica: Helvetica Neue, Helvetica, Arial, sans-serif;
-    --font-times: Times New Roman, Times, serif;
-    /*Base font size to provide base 10 rems*/
-    font-size : 10px;
-
-}
-/*Universal*/
-*{
-    box-sizing: border-box;
-}
-/*Body*/
-body{
-    margin: 0; padding: 0;
-    background-color: whitesmoke;
-}
-
-.header{
-    background: linear-gradient(to right, #4e54c8, #8f94fb);
-    padding: 10px;
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #333;
+  }
+  
+  /* Header */
+  .header {
+    background: #222;
     color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header .logo {
+    font-size: 1.5rem;
+  }
+  .header .nav a {
+    margin-left: 1rem;
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* Card */
+  .card {
+    background: white;
+    padding: 1rem;
+    margin: 1rem auto;
+    border-radius: 8px;
+    max-width: 400px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  .card-title {
+    margin-top: 0;
+  }
+  .card-btn {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    background: #0077ff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .card-btn:hover {
+    background: #005fd4;
+  }
+  
+  /* Footer */
+  .footer {
     text-align: center;
     padding: 1rem;
-    font-family: 'Orbitron', sans-serif;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2)
-}
-.header h1{
+    background: #222;
     color: white;
+<<<<<<< HEAD
     font-size: clamp(2.5rem, 5vw, 3rem);
     font-family: var(--font-helvetica);
     text-align: center; margin: 0; padding: 0;
@@ -277,3 +302,8 @@ main{
     border-radius: 50%;
     background-color: green;
 }
+=======
+    margin-top: 2rem;
+  }
+  
+>>>>>>> refs/remotes/origin/prod
