@@ -34,6 +34,19 @@ body{
     font-family: var(--font-helvetica);
     text-align: center; margin: 0; padding: 0;
 }
+
+#paragraph{
+    color: white;
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    font-family: var(--font-helvetica);
+    text-align: center; margin: 0; padding: 0;
+}
+
+.card{
+    background-color: rgb(215, 137, 35);
+    padding: 10px;
+    border-radius: 10px;
+}
 /*main*/
 main{
     margin: 0;
