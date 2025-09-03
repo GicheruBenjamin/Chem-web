@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //  src/Component.js
 
 export default function renderComponent(c={}){
