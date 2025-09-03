@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 //  src/Component.js
 
 export default function renderComponent(c={}){
@@ -6,7 +6,7 @@ export default function renderComponent(c={}){
     //If the tag is there or is not a string 
     // We provide an error
     if(c.tag == null || typeof c.tag != "string"){
-        console.log(`Check the tag "${c.tag}" — might be null or not a string`)
+        console.log(`Check the tag "${c.tag}" — might be null or not a strin
     }
     //Create an element from the tag if no issues
     const element = document.createElement(c.tag)
@@ -80,4 +80,3 @@ export default function renderComponent(c={}){
     
     return element
 }
-

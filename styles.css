@@ -54,4 +54,220 @@ body {
     padding: 1rem;
     background: #222;
     color: white;
+    font-size: clamp(2.5rem, 5vw, 3rem);
+    font-family: var(--font-helvetica);
+    text-align: center; margin: 0; padding: 0;
+}
+
+#paragraph{
+    color: white;
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    font-family: var(--font-helvetica);
+    text-align: center; margin: 0; padding: 0;
+}
+
+.card{
+    background-color: rgb(215, 137, 35);
+    padding: 10px;
+    border-radius: 10px;
+}
+/*main*/
+main{
+    margin: 0;
+    padding: clamp(1rem, 5vw, 2rem);
+}
+
+/*Periodic Table*/
+.periodic-table-section{
+    width: 30%;
+    height: 100%;
+    padding: 10px;
+}
+
+.periodic-table{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.periodictablecard{
+    width: 140px;
+    height: 150px;
+    border-radius: 10%;
+    padding: 10px;
+    background-color: antiquewhite;
+    display:grid;
+    grid-template-columns: 70% 1fr;
+    grid-template-rows: 1fr 1fr 1fr ;
+    row-gap: .3rem;
+    column-gap: .9rem;
+    justify-items: center;
+    align-items: stretch;
+}
+.periodictablecard *{
+    margin: 0; padding: 0;
+}
+
+.periodictablecard .symbol{
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 4;
+    text-align: center;
+    font-size: clamp(5rem, 5vw, 6rem);
+    font-family: var(--font-helvetica);
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.periodictablecard .name{
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 3; 
+    grid-row-end: 4;   
+    text-align: center;
+    font-size: min(2.5rem, 5vw, 3rem);
+    font-weight: bold;
+}
+
+.periodictablecard .electrons{
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 1; 
+    grid-row-end: 2;
+    font-size: clamp(1rem, 4vw, 1.6rem);
+    font-family: var(--font-times);
+    font-weight: bold;
+}
+.periodictablecard .protons{
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 2; 
+    grid-row-end: 3;
+    font-size: clamp(1rem, 4vw, 1.6rem);
+    font-family: var(--font-times);
+    font-weight: bold;
+}
+.periodictablecard .neutrons{
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 3; 
+    grid-row-end: 4;
+    font-size: clamp(1rem, 4vw, 1.6rem);
+    font-family: var(--font-times);
+    font-weight: bold;
+}
+
+/* Styles for each group */
+.alkali-metals-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.alkali-metals{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.alkaline-earth-metals-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.group13-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.group14-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.group15-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.group16-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.halogens-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.noble-gases-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.group3-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.group4-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.lanthanides-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.actinides-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.atom-section{
+    width: 70%;
+    height: 100%;
+    background-color: antiquewhite;
 }
