@@ -54,7 +54,6 @@ body {
     padding: 1rem;
     background: #222;
     color: white;
-<<<<<<< HEAD
     font-size: clamp(2.5rem, 5vw, 3rem);
     font-family: var(--font-helvetica);
     text-align: center; margin: 0; padding: 0;
@@ -272,38 +271,3 @@ main{
     height: 100%;
     background-color: antiquewhite;
 }
-/*.atom-section .element-info{
-    height: 30vh;
-    width: 100%;
-    background-color: rgb(199, 126, 30);
-}
-
-.atom-section.element-demo{
-    height: auto;
-    width: 100%;
-}
-.element-demo .proton{
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-    background-color: red;
-}
-
-.element-demo .neutron{
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-    background-color: blue;
-}
-
-.element-demo .electron{
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-    background-color: green;
-}
-=======
-    margin-top: 2rem;
-  }
-  
->>>>>>> refs/remotes/origin/prod
