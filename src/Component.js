@@ -1,82 +1,117 @@
-//  src/Component.js
-
-export default function renderComponent(c={}){
-    const props = c.props || {}
-    //If the tag is there or is not a string 
-    // We provide an error
-    if(c.tag == null || typeof c.tag != "string"){
-
-    }
-    //Create an element from the tag if no issues
-    const element = document.createElement(c.tag)
-
-    // Check presence
-    if(props === null){
-        console.log("There are no props")
-    }
-
-    // Add textContent
-    // If textContent is present and is type of string of string or number 
-    // add it to the component. 
-    if (props.textContent != null && 
-        (typeof props.textContent === "string" || typeof props.textContent === "number")) {
-        element.textContent = props.textContent;
-    }
-    else{
-        console.log(`There is no textContent in ${props.className}`)
-    }
-
-    // Add className
-    if(props.className != null && typeof props.className == "string"){
-        element.className = props.className
-    }
-    else{
-        console.log(`${this} lacks a className`)
-    }
-
-    // Add style = {}
-    if (props.style && typeof props.style === "object" && Object.keys(props.style).length > 0) {
-        for (const key in props.style) {
-            if (Object.prototype.hasOwnProperty.call(props.style, key)) {
-                element.style[key] = props.style[key];
-            }
-        }
-    } else {
-        console.log(`No styles provided for ${props.className || element.tagName}`);
-    }
-
-    // Add attributes = {}
-    if (props.attributes && typeof props.attributes === "object" && Object.keys(props.attributes).length > 0) {
-        for (const key in props.attributes) {
-            if (Object.prototype.hasOwnProperty.call(props.attributes, key)) {
-                element.setAttribute(key, props.attributes[key]);
-            }
-        }
-    } else {
-        console.log(`No attributes provided for ${props.className || element.tagName}`);
+// src/Component.js
+export class Component {
+    constructor(config = {}) {
+      this.tag = config.tag || "div";
+      this.props = config.props || {};
+      this.children = config.children || [];
+      this._root = null;
+      this._mounted = false;
+  
+      // state
+      this.state = { ...(this.props.initState || {}) };
     }
   
-    
-    //Add event listeners
-    if (props.events && typeof props.events === "object") {
-        for (const [event, handler] of Object.entries(props.events)) {
-            element.addEventListener(event, handler);
-        }
+    // create a real DOM element from config
+    _createElement(config) {
+      if (config == null) return document.createTextNode("");
+      if (typeof config === "string" || typeof config === "number") {
+        return document.createTextNode(String(config));
+      }
+  
+      const el = document.createElement(config.tag || "div");
+      const props = config.props || {};
+  
+      // textContent
+      if (props.textContent != null) {
+        el.textContent = String(props.textContent);
+      }
+  
+      // className
+      if (props.className) {
+        el.className = props.className;
+      }
+  
+      // attributes
+      if (props.attributes) {
+        Object.entries(props.attributes).forEach(([k, v]) => {
+          if (v != null) el.setAttribute(k, v);
+        });
+      }
+  
+      // style
+      if (props.style) {
+        Object.assign(el.style, props.style);
+      }
+  
+      // events
+      if (props.events) {
+        Object.entries(props.events).forEach(([ev, fn]) => {
+          if (typeof fn === "function") el.addEventListener(ev, fn);
+        });
+      }
+  
+      // ref
+      if (typeof props.ref === "function") {
+        props.ref(el);
+      }
+  
+      // children
+      if (Array.isArray(config.children)) {
+        config.children.forEach((child) => el.appendChild(this._createElement(child)));
+      }
+  
+      return el;
     }
-    else{
-        console.log(props.className || element.tagName, "has no events")
-    }    
-
-    // Add children = []
-    // Loop thru children and create them and append them to the component
-
-    if (Array.isArray(c.children)) {
-        for (const child of c.children) {
-            const ch = renderComponent(child);
-            element.appendChild(ch);
-        }
+  
+    // paint the component (first render or after setState)
+    render() {
+      const tree = {
+        tag: this.tag,
+        props: this.props,
+        children: this.children,
+      };
+      return this._createElement(tree);
     }
-    
-    return element
-}
-
+  
+    // mount into a parent DOM node
+    mount(parent) {
+      if (this._mounted) return;
+      this._root = this.render();
+      parent.appendChild(this._root);
+      this._mounted = true;
+  
+      if (typeof this.props.onMount === "function") {
+        this.props.onMount(this._root, this.state);
+      }
+    }
+  
+    // unmount from DOM
+    unmount() {
+      if (!this._mounted) return;
+      if (typeof this.props.onUnmount === "function") {
+        this.props.onUnmount(this._root, this.state);
+      }
+      this._root.remove();
+      this._mounted = false;
+      this._root = null;
+    }
+  
+    // update state and re-render
+    setState(updater) {
+      const prevState = { ...this.state };
+      const nextState =
+        typeof updater === "function" ? updater(prevState) : updater;
+      this.state = { ...prevState, ...nextState };
+  
+      if (this._mounted) {
+        const newRoot = this.render();
+        this._root.replaceWith(newRoot);
+        this._root = newRoot;
+  
+        if (typeof this.props.onUpdate === "function") {
+          this.props.onUpdate(this._root, prevState, this.state);
+        }
+      }
+    }
+  }
+  

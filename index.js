@@ -1,19 +1,32 @@
-// Entry point
-import renderComponent from "./src/Component.js"
+import { Component } from "./src/Component.js";
 
-// Have the body
-const body = document.body
+const counter = new Component({
+  tag: "div",
+  props: {
+    className: "counter",
+    initState: { count: 0 },
+    onMount: (el, state) => console.log("Mounted:", state),
+    onUpdate: (el, prev, next) => console.log("Updated:", prev, "→", next),
+    onUnmount: () => console.log("Unmounted"),
+  },
+  children: [
+    { tag: "span", props: { textContent: "Count: 0" } },
+    {
+      tag: "button",
+      props: {
+        textContent: "Click Me",
+        events: {
+          click: () => {
+            counter.setState((prev) => ({ count: prev.count + 1 }));
+            // update child manually for demo
+            counter._root.querySelector("span").textContent = `Count: ${counter.state.count}`;
+          },
+        },
+      },
+    },
+  ],
+});
 
-const Card = {
-    tag : "div",
-    props : {
-        textContent: " Hello I am here.",
-        className: "card",
-    }
-}
-
-
-// Mount when DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
-    body.appendChild(renderComponent(Card))
-})
+  counter.mount(document.body);
+});
