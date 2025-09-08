@@ -25,7 +25,8 @@ body {
   
   /* Card */
   .card {
-    background: white;
+    background: rgb(18, 18, 18);
+    color: white;
     padding: 1rem;
     margin: 1rem auto;
     border-radius: 8px;
