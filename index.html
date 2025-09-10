@@ -1,14 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="module" src="index.js" defer></script>
-    <link rel="stylesheet" href="./styles.css">
-  <title>Periodic Table</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Periodic Table Viewer</title>
+  <style>
+    body { font-family: sans-serif; margin: 1rem; background: #f9f9f9; }
+    .search-bar { padding: 0.5rem; width: 100%; margin-bottom: 1rem; font-size: 1rem; }
+    .group-card { margin-bottom: 2rem; padding: 1rem; border-radius: 8px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .group-title { margin-bottom: 1rem; }
+    .group-elements { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .card { padding: 1rem; border-radius: 8px; width: 120px; color: #fff; text-align: center; }
+    .element-name { font-size: 0.9rem; margin: 0; }
+    .element-symbol { font-size: 1.5rem; margin: 0.2rem 0; }
+    .element-info-container span { display: block; font-size: 0.8rem; }
+  </style>
 </head>
 <body>
   <div id="app"></div>
-  <script type="module" src="index.js"></script>
+
+  <!-- entry point -->
+  <script type="module" src="./index.js"></script>
 </body>
 </html>
